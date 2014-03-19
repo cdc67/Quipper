@@ -3,9 +3,9 @@
 Movie Quote generator written in C.
 
 By:
--Chris Callans
--Stephen Calabro
--Ben Greenfield
+* Chris Callans
+* Stephen Calabro
+* Ben Greenfield
 
 ------
 
@@ -27,8 +27,8 @@ This is all of the documentation for the files listed in the program.
 ###### char\* toHexSpace(const char \*s) ######
 This Method is used to convert a string with spaces to a string with %20 so that the string may be used in a URL
 
-@param const char \*s 
-@return char\* b
+* @param const char \*s 
+* @return char\* b
 
 ###### char\* returnId(char\* title) ######
 This method is used to call the OMDB api
@@ -36,5 +36,5 @@ and parse the return string to return
 the IMDB id for a specfic movie title.
 This title can then be passed to a url for gaining information on the movie.
 
-@param char\* title 
-@return char\* idFinal
+* @param char\* title 
+* @return char\* idFinal
