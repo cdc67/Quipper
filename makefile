@@ -2,6 +2,8 @@
 # makefile
 #
 # Chris Callans
+# Stephen Calabro
+# Ben Greenfield
 # 3/14
 
 all: build
