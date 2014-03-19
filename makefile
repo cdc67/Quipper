@@ -4,8 +4,10 @@
 # Chris Callans
 # 3/14
 
-all:
-	gcc -oquipper quipper.c omdb.c
+all: build
+	./quipper
+build:
+	gcc -o quipper quipper.c omdb.c
 
 quip: 
 	@./quipper
