@@ -7,7 +7,7 @@
 #include <time.h>
 #endif
 
-/*
+/* Helper function used to test just this class
 int main( int argc, char *argv[] )
 {
 	char input[256];
@@ -26,6 +26,12 @@ int main( int argc, char *argv[] )
 	return 0;
 }
 */
+/** This Method is used to convert a string 
+ *  with spaces to a string with %20 so that
+ *  the string may be used in a URL
+ *  @param const char *s
+ *  @return char* b
+ * */
 char* toHexSpace(const char *s)
 {
 	char *b=strcpy(malloc(3*strlen(s)+1),s),*p;
@@ -36,6 +42,14 @@ char* toHexSpace(const char *s)
 	}
 	return b; 
 }
+/** This method is used to call the OMDB api
+ *  and parse the return string to return 
+ *  the IMDB id for a specfic movie title.
+ *  This title can then be passed to a url for
+ *  gaining information on the movie.
+ *  @param char* title
+ *  @return char* idFinal
+ *  */
 char* returnId(char* title)
 {
 	if (title[0] == '\0') {
