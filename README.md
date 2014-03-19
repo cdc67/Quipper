@@ -2,6 +2,11 @@
 
 Movie Quote generator written in C.
 
+By:
+-Chris Callans
+-Stephen Calabro
+-Ben Greenfield
+
 ------
 
 ### Overview ###
