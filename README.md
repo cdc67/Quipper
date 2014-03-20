@@ -50,3 +50,14 @@ This title can then be passed to a url for gaining information on the movie.
 
 * @param char\* title 
 * @return char\* idFinal
+
+
+
+### Development Log ###
+
+* Using CURL turned out to be a problem with libcurl
+..* To fix this we were able to use CURL through a c system call outputing it to a file. Then we were able to parse that file and get the info we needed. After that we remove the file to clean up.
+* Using libjson0 did not work
+..* To fix this we simply parsed the OMDB api through CURL as described above. We then parsed out just the IMDB id
+* Sending movie titles to the OMDB would not work with a space
+..* To counter this we had to create a method toHexSpace() that changed all occurances of a space in a string to $20. The hex value. This would work when sending the title to the OMDB api
