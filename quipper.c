@@ -14,7 +14,10 @@ char* linebrk =
 int MAX_LEN = 300;
 int MAX_QUOTES = 25;
 
-// Declare helper struct for movieList
+/* Wrapper for a resizable array:
+   char** movies - List of movie titles
+   int size - Current number of titles in movies
+   int cap - Current capacity of movies */
 struct movieList {
 	char** movies;
 	int size;
@@ -23,7 +26,7 @@ struct movieList {
 
 
 // Declare local functions
-int Search_in_File(char* fname, char* str, int bg);
+int Search_in_File(char* fname, char* title, int bg);
 int getQuote(char* movieName, char* movieId, int bg);
 char* welcomePage();
 void getMovieList(struct movieList* ml);
@@ -33,6 +36,12 @@ char* getMoreQuotes(char* movieName, char* movieId, int new);
 void init_movieList(struct movieList* ml);
 void do_bg(struct movieList* movies);
 
+/* Function that facilitates running the program in background mode. This function
+	will continually generate a random movie from movies and make the call to 
+	getMoreQuotes(). The function contains an infinite while loop as well as a call
+	to sleep(15). This allows the function to output a quote every 15 seconds. Since
+	the program is run in the background it will continue indefinitely, call the 
+	makefile target finish to kill this process. */
 void do_bg(struct movieList* movies) {
 	int max = movies->size;
 	if (max == 0) {
@@ -61,6 +70,9 @@ void do_bg(struct movieList* movies) {
 	}
 }
 
+/* Function that initializes the movieList by mallocing space for array ml.movies
+	and sets ml.size and ml.cap. */
+
 void init_movieList(struct movieList* ml) {
 	ml->movies = NULL;
 	ml->movies = (char**)malloc(sizeof(char*)*4);
@@ -68,6 +80,9 @@ void init_movieList(struct movieList* ml) {
 	ml->cap = 4;
 }
 
+/* Populates the movieList with the lines contained in the file movie_list so that
+	there is a list of random movies to fetch a quote from if the user chooses. 
+	Modifies the memory address pointed to by ml. Calls init_movieList(). */
 void getMovieList(struct movieList* movies) {
 	FILE* fp;
 	if ((fp = fopen("movie_list", "r")) == NULL) {
@@ -101,6 +116,10 @@ void getMovieList(struct movieList* movies) {
 
 }
 		
+/* Randomly generates a number in the range [0-movieList.cap-1] and selects the
+	movie title at that index of movieList.movies. Then proceeds fetch a quote in
+	the same manner as if the movie title were input by the user. Prompts the user
+	to approve recursive call to generate another random quote. */
 void getRandomQuote(struct movieList movieList) {
 	int max = movieList.size;
 	if (max == 0) {
@@ -126,6 +145,10 @@ void getRandomQuote(struct movieList movieList) {
 	exit(0);
 }
 	
+/* Function that facilitates continued quote searching without needing to restart
+	the program. New determines whether the user will input the title of a new
+	movie. If it is set then the movieId must be found by calling returnId().
+	Ultimately calls getQuote() with the appropriate movieName and movieId. */
 char* getMoreQuotes(char* movieName, char* movieId, int new) {
 	if (new) {
 		printf("\nEnter name of a movie to pull a quote from: ");
@@ -146,6 +169,11 @@ char* getMoreQuotes(char* movieName, char* movieId, int new) {
 	}
 }
 
+/* This function searches through the raw html curl response in file fname and 
+	parses out an array of quotes. A random index of the quotes array is generated
+	and then the quote at that index is passed to showQuote(). 
+	The bg parameter is simply passed through to showQuote() and determines whether
+	or not the quote should be displayed with bg formatting. */
 int Search_in_File(char *fname, char* title, int bg) {
 	char* str = "span class=\"character\"";
 	FILE *fp;
@@ -225,6 +253,9 @@ int Search_in_File(char *fname, char* title, int bg) {
 	return 0;
 }
 
+/* Function that makes the curl call to the imdb url. The url is built using the
+	movieId parameter. The bg parameter is passed through to Search_in_File().
+	movieName is passed through as well for display in showQuote(). */
 int getQuote(char* title, char* movieId, int bg) {
 
    // Curl web site, save to file
@@ -244,6 +275,9 @@ int getQuote(char* title, char* movieId, int bg) {
     
 }
 
+/* Function that is run at the start of the program. Displays a title header and
+	the mode options. Prompts the user to enter a movie Returns the title of a movie
+	entered by user. */
 char* welcomePage() {
 	char* dashes = "----------------------";
 	printf("%s\n%s Welcome to Quipper %s\n%s\n", linebrk, dashes,
@@ -276,6 +310,9 @@ char* welcomePage() {
 		exit(0);
 }
 
+/* Function to display the quote parameter. Also prints the title of the movie that
+	the quote came from. There is some formatting done to keep the text from over
+	running a line. Extra newlines are output if bg parameter is set to 1. */
 void showQuote(char* q, char* title, int bg) {
 	char* cpy = (char*)malloc(sizeof(char)*strlen(q));
 	strcpy(cpy,q);
@@ -321,7 +358,10 @@ void showQuote(char* q, char* title, int bg) {
 	printf("\n");
 }
 
-
+/* background mode or not. If so then the movieList is constructed and do_bg is
+	called. Otherwise the main function will call the welcomePage to determine the
+	mode and then allow the user to continually generate quotes in the mode of their
+	chosing. */
 int main(int argc, char *argv[]) {
 
 	srand(time(NULL));
