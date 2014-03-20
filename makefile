@@ -5,7 +5,7 @@
 # 3/14
 
 all:
-	gcc -oquipper quipper.c omdb.c
+	gcc -o quipper quipper.c omdb.c
 
 quip: 
 	@./quipper
