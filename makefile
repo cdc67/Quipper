@@ -14,7 +14,7 @@ build:
 quip: 
 	@./quipper
 
-bg:
+bg: build
 	@./quipper bg &
 
 gdb:

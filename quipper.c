@@ -49,7 +49,7 @@ void do_bg(struct movieList* movies) {
 		exit(-1);
 	}
 
-
+	int i ;
 	while (1) {
 		int num = rand() % max;
 		char* movieName = movies->movies[num];
@@ -65,9 +65,12 @@ void do_bg(struct movieList* movies) {
 			continue;
 		}
 
-		getQuote(movieName, id, 1);
-		sleep(10);
+		getQuote(movieName, strdup(id), 1);
+		int s;
+		for (s = 0; s < 10; s++)
+			sleep(1);
 	}
+
 }
 
 /* Function that initializes the movieList by mallocing space for array ml.movies
@@ -164,6 +167,12 @@ char* getMoreQuotes(char* movieName, char* movieId, int new) {
 		return strdup(movie_name);
 	}
 	else {
+		if (strlen(movieId) == 0) {
+			char* title = toHexSpace(movieName);
+			char* movie_id = returnId(title);
+			getQuote(movieName, strdup(movie_id), 0);
+			return movieName;
+		}
 		getQuote(movieName, strdup(movieId), 0);
 		return movieName;
 	}
@@ -237,6 +246,10 @@ int Search_in_File(char *fname, char* title, int bg) {
 	// Chose random quote
 	int i;
 	i = rand();
+	if (find_result == 0) {
+		printf("No quotes found for %s\n", title);
+		return;
+	}
 	int num = i % find_result;
 	while (strlen(text[num]) > MAX_LEN) {
 		num = (num+1) % MAX_QUOTES;
@@ -263,9 +276,10 @@ int getQuote(char* title, char* movieId, int bg) {
    char* cmd_post = "/quotes?ref_=ttqu_ql_4";
    int cmd_length = strlen(cmd_pre) + strlen(cmd_post) + strlen(movieId);
    char* cmd = (char*)malloc(sizeof(char)*cmd_length);
+	char* id = strdup(movieId);
 	memset(cmd, 0, cmd_length);
    strcat(cmd, cmd_pre);
-   strcat(cmd, strdup(movieId));
+   strcat(cmd, id);
    strcat(cmd, cmd_post);
    system(cmd);
 
