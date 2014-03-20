@@ -6,13 +6,9 @@
 # Ben Greenfield
 # 3/14
 
-<<<<<<< HEAD
-all:
-=======
 all: build
 	./quipper
 build:
->>>>>>> FETCH_HEAD
 	gcc -o quipper quipper.c omdb.c
 
 quip: 
