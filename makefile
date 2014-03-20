@@ -23,5 +23,6 @@ gdb:
 
 finish:
 	@pkill quipper
+	@rm -f tmp
 
 

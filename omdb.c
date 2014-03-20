@@ -75,7 +75,7 @@ char* returnId(char* title)
 	
 	while(fp == NULL)
 	{
-		perror("Error while opening the file.\n");
+		printf("Error while opening the file.\n");
 		exit(0);
 	}	
 	int count = 0;

@@ -153,18 +153,18 @@ char* getMoreQuotes(char* movieName, char* movieId, int new) {
 	if (new) {
 		printf("\nEnter name of a movie to pull a quote from: ");
 		fflush(stdout);
-		char movieName[101];
-		memset(movieName, 0, sizeof(movieName));
-		scanf("\n%99[0-9a-zA-Z ]s", movieName);
+		char movie_name[101];
+		memset(movie_name, 0, sizeof(movie_name));
+		scanf("\n%99[0-9a-zA-Z ]s", movie_name);
 
-		char* title = toHexSpace(movieName);
-		char* movieId = returnId(title);
+		char* title = toHexSpace(movie_name);
+		char* movie_id = returnId(title);
 
-		getQuote(movieName, movieId, 0);
-		return strdup(movieName);
+		getQuote(movie_name, strdup(movie_id), 0);
+		return strdup(movie_name);
 	}
 	else {
-		getQuote(movieName, movieId, 0);
+		getQuote(movieName, strdup(movieId), 0);
 		return movieName;
 	}
 }
@@ -378,8 +378,6 @@ int main(int argc, char *argv[]) {
 	char* movieName = welcomePage();
 	char* title = toHexSpace(movieName);
 	char* movieId = returnId(title);
-	char* static_id = (char*)malloc(sizeof(char)*strlen(movieId));
-	strncat(static_id, movieId, strlen(movieId));
 	int i = getQuote(movieName, strdup(movieId), 0);
 	char again[15];
 	char sameMovie[15];
@@ -399,11 +397,12 @@ int main(int argc, char *argv[]) {
 			if ((strcmp(sameMovie,"y") == 0) || (strcmp(sameMovie,"Y") == 0)) 
 				new_title = 0;
 
-			movieName = getMoreQuotes(movieName, static_id, new_title);
-			if (new_title) {
+			movieName = getMoreQuotes(movieName, movieId, new_title);
+			
+			//if (new_title) {
 				title = toHexSpace(movieName);
 				movieId = returnId(title);
-			}
+			//}
 		}
 		else  {
 			another = 0;
