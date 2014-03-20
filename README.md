@@ -2,6 +2,8 @@
 
 Movie Quote generator written in C.
 
+Link to GitHub repository: https://github.com/cdc67/Quipper
+
 By:
 * Chris Callans
 * Stephen Calabro
